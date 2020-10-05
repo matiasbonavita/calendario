@@ -1,0 +1,135 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap");
+
+* {
+  font-family: "Montserrat", sans-serif;
+}
+
+ul {
+  list-style: none;
+}
+
+/* agregado de categorias */
+
+.categories {
+  margin-top: 30px;
+  -webkit-box-shadow: 0px 0px 25px -9px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 25px -9px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 25px -9px rgba(0, 0, 0, 0.75);
+  padding: 30px;
+  width: 400px;
+  background-color: #ffffff;
+  border-radius: 30px;
+}
+
+.categories-title {
+  padding: 20px;
+  border-bottom: 1px solid grey;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+.categories form {
+  display: flex;
+  flex-direction: column;
+}
+
+.categories button {
+  margin-top: 20px;
+  width: 90px;
+  border-radius: 300px;
+  border: none;
+  padding: 8px;
+  background-color: #182628;
+  color: white;
+}
+
+.categories button:hover {
+  cursor: pointer;
+}
+
+.categories input {
+  margin-bottom: 20px;
+}
+
+.categories label {
+  margin-bottom: 10px;
+}
+
+.categories-loop {
+  padding: 0;
+}
+
+.categories-list {
+  text-align: center;
+}
+
+.categories-list button {
+  margin-top: 0;
+}
+
+.categories-list input {
+  margin-bottom: 0;
+}
+
+.categories-list button {
+  font-size: 10px;
+}
+
+.categories-list .categories-title-loop {
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.categories-list .DayPickerInput {
+  margin-right: 10px;
+}
+
+.categories-list ul,
+.categories-list ul li {
+  margin: 20px 0;
+}
+
+.categories-list ul li button {
+  width: 30px;
+}
+
+/*lista de categorias*/
+
+.categories-list-wrapper {
+  margin-top: 30px;
+  -webkit-box-shadow: 0px 0px 25px -9px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 25px -9px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 25px -9px rgba(0, 0, 0, 0.75);
+  padding: 30px;
+  width: 400px;
+  background-color: #ffffff;
+  border-radius: 30px;
+}
+
+.categories-list-wrapper button {
+  margin-top: 20px;
+  width: 90px;
+  border-radius: 300px;
+  border: none;
+  padding: 8px;
+  background-color: #182628;
+  color: white;
+}
+
+.categories-list-wrapper button:hover {
+  cursor: pointer;
+}
+
+.categories-wrapper {
+  margin-right: 15px;
+}
+
+.DayPickerInput-OverlayWrapper .DayPicker-Day {
+  color: black;
+}
+
+@media (max-width: 500px) {
+  .DayPickerInput-OverlayWrapper {
+    margin-right: 300px !important;
+  }
+}
