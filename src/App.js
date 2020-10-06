@@ -98,7 +98,7 @@ export default class App extends React.Component {
   }
 
   render() {
-
+    document.title = 'Calendaro Latech'
     //renderizado de colores del almanaque
     const colorSelectedDay = this.state.selectedDay[this.state.selectedDay.length - 1];
 
