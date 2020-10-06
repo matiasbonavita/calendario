@@ -3,7 +3,7 @@ import "react-day-picker/lib/style.css";
 import DayPickerInput from "react-day-picker/DayPickerInput";
 import "react-day-picker/lib/style.css";
 import "./list.css";
-
+//localization con moment.js
 import MomentLocaleUtils, {
   formatDate,
   parseDate,
@@ -11,70 +11,69 @@ import MomentLocaleUtils, {
 
 import "moment/locale/es";
 
+
+
 export default class List extends React.Component {
   constructor(props) {
     super(props);
     this.handleDayChange = this.handleDayChange.bind(this);
     this.addDiasObj = this.addDiasObj.bind(this);
+    this.myRef = React.createRef();
     this.state = {
       selectedDay: undefined,
-      isEmpty: true,
-      isDisabled: false,
+      dias: [],
       diasObj: [],
       categoriasObj: [
-        { categoria: "Trabajo", color: "#2ECC40" },
-        { categoria: "Vacaciones", color: "#FF4136" },
+        {  categoria: "Trabajo", color: "royalblue" },
+        {  categoria: "Vacaciones", color: "darkred" },
       ],
     };
   }
 
-  //agreegado de dias version objetos
+
+  //agregado de dias con su respectivo id y categoria
   addDiasObj(dias, categoria) {
-    this.setState({
-      diasObj: [...this.state.diasObj, { dia: dias, categoria: categoria }],
-    });
+    if(dias === undefined){
+      alert("Selecciona un día para continuar")
+    }else{
+      dias = dias.toLocaleDateString();
+      this.setState({
+        diasObj: [...this.state.diasObj, { id: this.state.diasObj.length ,dia: dias, categoria: categoria }],
+      });
+    }
   }
 
-  //comportamiento de daychange de libreria
-
-  handleDayChange(selectedDay, modifiers, dayPickerInput) {
-    const input = dayPickerInput.getInput();
+  //guardo el dia seleccionado en selectedDay en formato Date
+  handleDayChange(selectedDay) {
     this.setState({
       selectedDay,
-      isEmpty: !input.value.trim(),
-      isDisabled: modifiers.disabled === true,
     });
   }
 
-  //lista de categorias
-  //borrado de dia version objetos
+  //---lista de categorias---
+  //borrado de dia 
   handleDelete(dia) {
-    var joined = this.state.dias.filter((day) => day !== dia);
     this.setState({
-      diasObj: joined,
+      diasObj: this.state.diasObj.filter((_, i) => i !== dia.id)
     });
   }
 
-  //agregado de categorias y colores
-  handleFormSubmit = (e) => {
-    e.preventDefault();
-    var joined = this.state.categorias.concat(e.target.categoria.value);
-    this.setState({
-      categorias: joined,
-    });
-    e.target.categoria.value = "";
-  };
-
+  //agregado de categorias y colores a categoriasObj
   handleFormSubmitObj = (e) => {
     e.preventDefault();
-    this.setState({
-      categoriasObj: [
-        ...this.state.categoriasObj,
-        { categoria: e.target.categoria.value, color: e.target.colors.value },
-      ],
-    });
-    console.log(this.state.categoriasObj);
+    if(e.target.categoria.value === ""){
+      alert("El campo Nombre de la categoría esta vacío. Asigne un nombre y luego continúe");
+    }else{
+      this.setState({
+        categoriasObj: [
+          ...this.state.categoriasObj,
+          { categoria: e.target.categoria.value, color: e.target.colors.value },
+        ],
+      });
+      e.target.categoria.value = "";
+    }
   };
+
 
   render() {
     const { selectedDay } = this.state;
@@ -82,48 +81,51 @@ export default class List extends React.Component {
     return (
       <div className="categories-wrapper">
         <div className="categories">
+          {/* formulario de categorias */}
           <div className="categories-title">AGREGAR CATEGORÍA</div>
           <form onSubmit={this.handleFormSubmitObj}>
             <label>NOMBRE </label>
             <input type="text" name="categoria" />
             <label>COLOR </label>
             <select name="colors" id="colors">
-              <option value="#0074D9">Azul</option>
-              <option value="#FF4136">Rojo</option>
-              <option value="#2ECC40">Verde</option>
-              <option value="#B10DC9">Violeta</option>
+              {/* TODO: mejorar colores y agregar opcion para agregar colores con un colorpicker hexadecimal */}
+              <option value="royalblue">Azul</option>
+              <option value="darkred">Rojo</option>
+              <option value="forestgreen">Verde</option>
+              <option value="deeppink">Violeta</option>
             </select>
             <button type="submit">Agregar</button>
           </form>
         </div>
         <div className="categories-list-wrapper">
+           {/* listado de categorias de usuario */}
           <div className="categories-title">TUS CATEGORÍAS</div>
           <ul className="categories-loop">
-            {this.state.categoriasObj.map((categoria) => (
-              <li className="categories-list" style={{ color: categoria.color }}>
+            {/* loopeo sobre el listado de categorias y colores y asigno los colores correspondientes a la categoria */}
+            {this.state.categoriasObj.map((categoria,i) => (
+              <li ley={i} className="categories-list" style={{ color: categoria.color }}>
                 <span className="categories-title-loop">
                   {categoria.categoria}
                 </span>
+                 {/* seleccionador de dias */}
                 <DayPickerInput
                   formatDate={formatDate}
                   parseDate={parseDate}
                   format="L"
-                  placeholder={`${formatDate(new Date(), "L", "es")}`}
+                  placeholder={`Elija la fecha a agendar`}
                   dayPickerProps={{
                     locale: "es",
                     localeUtils: MomentLocaleUtils,
                   }}
                   value={this.selectedDay}
                   onDayChange={this.handleDayChange}
-                  dayPickerProps={{
-                    selectedDays: selectedDay,
-                  }}
                 />
+                 {/* agrego el dia seleccionado del daypicker al almanaque y al listado de fechas de las categorias  */}
                 <button
                   onClick={() => {
                     this.props.getData(selectedDay, categoria, categoria.color);
                     this.addDiasObj(
-                      selectedDay.toLocaleDateString(),
+                      selectedDay,
                       categoria
                     );
                   }}
@@ -132,15 +134,17 @@ export default class List extends React.Component {
                 </button>
 
                 <ul>
-                  {this.state.diasObj.map((diaObj) => (
-                    <div>
-                      {categoria === diaObj.categoria ? (
+                   {/* listado de fechas en la categoria correspondiente */}
+                  {this.state.diasObj.map((diaObj,i) => (
+                    <div key={i}>
+                      {diaObj.categoria  ===  categoria ? (
                         <li>
                           {diaObj.dia}
+                           {/* elimino la categoria */}
                           <button
                             onClick={() => {
-                              this.handleDelete(diaObj.dia);
-                              this.props.deleteDay(selectedDay);
+                              this.handleDelete(diaObj);
+                              this.props.deleteDay(diaObj.id);
                             }}
                           >
                             X

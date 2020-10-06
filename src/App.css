@@ -48,6 +48,22 @@ footer {
   font-size: 12px;
 }
 
+.royalblue{
+  background-color: royalblue !important;
+}
+
+.darkred{
+  background-color: darkred !important;
+}
+
+.forestgreen{
+  background-color: forestgreen !important;
+}
+
+.deeppink{
+  background-color: deeppink !important;
+}
+
 @media (max-width: 1600px) {
   .categories-wrapper {
     width: 520px;

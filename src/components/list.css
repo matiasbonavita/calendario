@@ -45,6 +45,8 @@ ul {
 
 .categories button:hover {
   cursor: pointer;
+  background-color: #687864;
+  transition: 0.2s;
 }
 
 .categories input {
@@ -84,13 +86,13 @@ ul {
   margin-right: 10px;
 }
 
-.categories-list ul,
-.categories-list ul li {
+.categories-list ul {
   margin: 20px 0;
 }
 
 .categories-list ul li button {
   width: 30px;
+  margin-left: 10px;
 }
 
 /*lista de categorias*/
@@ -118,6 +120,8 @@ ul {
 
 .categories-list-wrapper button:hover {
   cursor: pointer;
+  background-color: #687864;
+  transition: 0.2s;
 }
 
 .categories-wrapper {
@@ -132,4 +136,19 @@ ul {
   .DayPickerInput-OverlayWrapper {
     margin-right: 300px !important;
   }
+
+  .categories-loop >li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .categories-title-loop{
+    margin-bottom: 15px;
+  }
+  
+
 }
+ 
+
