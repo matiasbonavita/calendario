@@ -1,9 +1,9 @@
 import React from "react";
 import DayPicker from "react-day-picker";
 import "react-day-picker/lib/style.css";
-import List from "./components/list";
+import List from "./components/List";
 import "./App.css";
-import Navbar from "./components/navbar";
+import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Fade from "react-reveal/Fade";
 
@@ -45,34 +45,43 @@ export default class App extends React.Component {
       dataChild: null,
       categorias: [
         { categoria: "Trabajo", color: "royalblue" },
-        { categoria: "Vacaciones", color: "darkred" },
+        { categoria: "Vacaciones", color: "firebrick" },
       ],
       lastColor: [],
-      diasColor:[],
-      diaSeleccionado: [],
+      todosLosDias:[],
+      diasIguales:[],
     };
   }
 
   //mantengo el color del dia si elijo otro dia. 
-  // TODO: resolver bug que al agregar un nuevo dia en una distinta categoria en el componente list se pisan las categorias. 
-  // esto se debe a que queda guardado en selectedDay la fecha en la categoria seleccionada anteriormente en el componente list y pintandolas del ultimo color seleccionado
-
   componentDidMount(){
-    const dias = document.querySelectorAll('.DayPicker-Day');
-    dias.forEach(dia => {
-      this.state.diasColor.push(dia);
+    const deiz = document.querySelectorAll('.DayPicker-Day');
+    deiz.forEach((dia) => {
+      this.state.todosLosDias.push(dia);
     });
   }
 
+  //loopeo los dias, checkeo si el dia loopeado fue seleccionado por el usuario, y si fue seleccionado, lo pinto del color de la categoria donde viene la fecha seleccionada
   componentDidUpdate(){
-    const dias = this.state.diasColor;
+    const diaSeleccionado = []
+    const dias = this.state.todosLosDias;
     dias.forEach(dia => {
       if (dia.classList.contains('DayPicker-Day--selected') && !dia.classList.contains('DayPicker-Day--outside')){
-        this.state.diaSeleccionado.push(dia);
-        dia.classList.add( this.state.categorias[this.state.categorias.length - 1].color );
+        diaSeleccionado.push(dia);
+        diaSeleccionado.forEach(seleccionado =>{
+          if(!seleccionado.classList.contains('royalblue') && 
+          !seleccionado.classList.contains('firebrick') && 
+          !seleccionado.classList.contains('forestgreen') && 
+          !seleccionado.classList.contains('sienna') &&
+          !seleccionado.classList.contains('deeppink')){
+            seleccionado.classList.add( this.state.lastColor[this.state.lastColor.length - 1] );
+          }
+        })
       }
     });
   }
+
+  
 
 
   //recibo la data del componente hijo List
@@ -93,28 +102,23 @@ export default class App extends React.Component {
 //elimino el dia segun el id que me manda el boton de eliminar del componente list
   deleteDay(index) {
     this.setState((prevState) => ({
-      selectedDay: [...prevState.selectedDay.slice(0,index), ...prevState.selectedDay.slice(index+1)]
+      selectedDay: [...prevState.selectedDay.slice(0,index), ...prevState.selectedDay.slice(index+1)],
+      lastColor: [...prevState.lastColor.slice(0,index), ...prevState.lastColor.slice(index+1)],
     }))
   }
 
   render() {
     document.title = 'Calendaro Latech'
-    //renderizado de colores del almanaque
-    const colorSelectedDay = this.state.selectedDay[this.state.selectedDay.length - 1];
 
-    const colorz = this.state.categorias[this.state.categorias.length - 1].color;
+    const alreadySeen = [];
+
+    const diasIguales = [];
+
+    this.state.selectedDay.forEach(str => alreadySeen[str] ? diasIguales.push(str) : alreadySeen[str] = true);
 
     const modifiers = {
-      coloredDay: colorSelectedDay,
+      birthday: diasIguales,
     };
-
-    const modifiersStyles = {
-      coloredDay: {
-        backgroundColor: colorz,
-      },
-    };
-
-    
 
     return (
       <div>
@@ -123,6 +127,10 @@ export default class App extends React.Component {
         .DayPicker-Day--outside{
           color: #8B9898 !important;
           background-color:transparent !important;
+          background: transparent !important;
+        }
+        .DayPicker-Day--birthday{
+          background: linear-gradient(90deg, ${this.state.lastColor} 80%, ${this.state.lastColor} 25%);
         }
         `}</style>
         <Navbar />
@@ -136,11 +144,10 @@ export default class App extends React.Component {
                 selectedDays={this.state.selectedDay}
                 onDayClick={this.handleDayClick}
                 canChangeMonth={false}
-                modifiers={modifiers}
-                modifiersStyles={modifiersStyles}
                 months={MONTHS}
                 weekdaysLong={WEEKDAYS_LONG}
                 weekdaysShort={WEEKDAYS_SHORT}
+                modifiers={modifiers}
               />
             </div>
             <div>

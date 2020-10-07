@@ -25,11 +25,14 @@ export default class List extends React.Component {
       diasObj: [],
       categoriasObj: [
         {  categoria: "Trabajo", color: "royalblue" },
-        {  categoria: "Vacaciones", color: "darkred" },
+        {  categoria: "Vacaciones", color: "firebrick" },
       ],
     };
   }
 
+  componentWillMount() {
+    this.initialState = this.state
+  }
 
   //agregado de dias con su respectivo id y categoria
   addDiasObj(dias, categoria) {
@@ -51,10 +54,10 @@ export default class List extends React.Component {
   }
 
   //---lista de categorias---
-  //borrado de dia 
+  //borrado de dia
   handleDelete(dia) {
     this.setState({
-      diasObj: this.state.diasObj.filter((_, i) => i !== dia.id)
+      diasObj: this.state.diasObj.filter((dey) => dey.id !== dia.id)
     });
   }
 
@@ -77,7 +80,7 @@ export default class List extends React.Component {
 
   render() {
     const { selectedDay } = this.state;
-
+    
     return (
       <div className="categories-wrapper">
         <div className="categories">
@@ -90,9 +93,10 @@ export default class List extends React.Component {
             <select name="colors" id="colors">
               {/* TODO: mejorar colores y agregar opcion para agregar colores con un colorpicker hexadecimal */}
               <option value="royalblue">Azul</option>
-              <option value="darkred">Rojo</option>
+              <option value="firebrick">Rojo</option>
               <option value="forestgreen">Verde</option>
               <option value="deeppink">Violeta</option>
+              <option value="sienna">Marron</option>
             </select>
             <button type="submit">Agregar</button>
           </form>
@@ -135,14 +139,15 @@ export default class List extends React.Component {
 
                 <ul>
                    {/* listado de fechas en la categoria correspondiente */}
-                  {this.state.diasObj.map((diaObj,i) => (
-                    <div key={i}>
+                  {this.state.diasObj.map((diaObj) => (
+                    <div >
                       {diaObj.categoria  ===  categoria ? (
-                        <li>
+                        <li key={diaObj.id}> 
                           {diaObj.dia}
                            {/* elimino la categoria */}
                           <button
-                            onClick={() => {
+                            onClick={() => {            
+                              console.log(diaObj.id)            
                               this.handleDelete(diaObj);
                               this.props.deleteDay(diaObj.id);
                             }}

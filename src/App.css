@@ -52,8 +52,8 @@ footer {
   background-color: royalblue !important;
 }
 
-.darkred{
-  background-color: darkred !important;
+.firebrick{
+  background-color: firebrick !important;
 }
 
 .forestgreen{
@@ -62,6 +62,10 @@ footer {
 
 .deeppink{
   background-color: deeppink !important;
+}
+
+.sienna{
+  background-color: sienna !important;
 }
 
 @media (max-width: 1600px) {
@@ -91,4 +95,20 @@ footer {
   .categories-list-wrapper {
     width: 80%;
   }
+}
+
+.listhover{
+  background-color:green;
+  position: absolute;
+  opacity:0;
+}
+
+/* .listhover:hover {
+  background-color:red;
+  opacity:1;
+} */
+
+.dayhover:hover .listhover{
+  background-color:red;
+  opacity:1;
 }
