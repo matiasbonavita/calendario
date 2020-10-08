@@ -1,9 +1,9 @@
 import React from "react";
 import DayPicker from "react-day-picker";
 import "react-day-picker/lib/style.css";
-import List from "./components/List";
+import List from ".components/List"
+import Navbar from "./components/Navbar"
 import "./App.css";
-import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Fade from "react-reveal/Fade";
 
